@@ -16,7 +16,7 @@ export default async function handler(req, res) {
     imageUrl = imageUrl.replace('&rf=LaDigue_1920x1080.jpg&pid=hp', '');
     
     // 构造 1k 图片 URL
-    const image1kUrl = `${baseUrl}${imageUrl}_1920x1080.jpg`;
+    const image1kUrl = `${baseUrl}${imageUrl}`;
     
     // 4. 重定向到图片（直接返回图片）
     res.setHeader('Cache-Control', 'public, max-age=86400'); // 缓存24小时
