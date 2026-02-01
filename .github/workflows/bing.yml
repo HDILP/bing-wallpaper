@@ -1,0 +1,33 @@
+name: Daily Bing Wallpaper
+
+on:
+  schedule:
+    # 每天北京时间上午 8:00 运行 (UTC 0:00)
+    - cron: '0 0 * * *'
+  workflow_dispatch: # 允许手动触发
+
+jobs:
+  update-wallpaper:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Download Wallpaper
+        run: python get_bing.py
+
+      - name: Commit and Push
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add bing.jpg
+          # 只有在图片有变动时才提交，防止报错
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Update daily wallpaper" && git push)
